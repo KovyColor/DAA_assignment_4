@@ -1,7 +1,11 @@
-##Course: Design and Analysis of Algorithms
-##Assignment 4
-##Student: Sherkenov Zhanassyl
-##Goal: Integrate Strongly Connected Components (SCC), Topological Sort, and Shortest Paths in DAGs into one Smart City scheduling model.
+
+## Course: Design and Analysis of Algorithms
+
+## Assignment 4
+
+## Student: Sherkenov Zhanassyl
+
+## Goal: Integrate Strongly Connected Components (SCC), Topological Sort, and Shortest Paths in DAGs into one Smart City scheduling model.
 
 ## 1. Data Summary
 
