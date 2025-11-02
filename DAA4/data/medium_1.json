@@ -1,0 +1,29 @@
+{
+  "n": 15,
+  "edges": [
+    {"from": 7, "to": 13, "weight": 3},
+    {"from": 3, "to": 10, "weight": 5},
+    {"from": 3, "to": 12, "weight": 8},
+    {"from": 3, "to": 6, "weight": 5},
+    {"from": 7, "to": 9, "weight": 4},
+    {"from": 13, "to": 14, "weight": 7},
+    {"from": 13, "to": 4, "weight": 6},
+    {"from": 2, "to": 14, "weight": 1},
+    {"from": 9, "to": 7, "weight": 9},
+    {"from": 14, "to": 7, "weight": 3},
+    {"from": 11, "to": 5, "weight": 2},
+    {"from": 8, "to": 14, "weight": 2},
+    {"from": 5, "to": 3, "weight": 7},
+    {"from": 4, "to": 9, "weight": 7},
+    {"from": 1, "to": 3, "weight": 9},
+    {"from": 14, "to": 12, "weight": 4},
+    {"from": 8, "to": 11, "weight": 9},
+    {"from": 11, "to": 4, "weight": 9},
+    {"from": 8, "to": 10, "weight": 9},
+    {"from": 6, "to": 14, "weight": 9},
+    {"from": 12, "to": 5, "weight": 4},
+    {"from": 9, "to": 10, "weight": 1},
+    {"from": 1, "to": 4, "weight": 4},
+    {"from": 4, "to": 1, "weight": 2}
+  ]
+}

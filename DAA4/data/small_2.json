@@ -1,0 +1,7 @@
+{
+  "n": 10,
+  "edges": [
+    {"from": 4, "to": 8, "weight": 1},
+    {"from": 4, "to": 8, "weight": 6}
+  ]
+}
