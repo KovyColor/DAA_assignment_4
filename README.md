@@ -3,56 +3,77 @@ Assignment 4
 Student: Sherkenov Zhanassyl
 Goal: Integrate Strongly Connected Components (SCC), Topological Sort, and Shortest Paths in DAGs into one Smart City scheduling model.
 
-1. Data Summary
+## 1. Data Summary
 
-The datasets simulate Smart City / Smart Campus tasks such as street cleaning, sensor maintenance, and infrastructure repairs, each with interdependencies.
+| Dataset              | # of Tasks | # of Dependencies | Density | Cyclic Components |
+|----------------------|------------|-------------------|----------|-------------------|
+| `dataset_small.json` | 10         | 15                | 0.17     | 2                 |
+| `dataset_medium.json`| 50         | 120               | 0.05     | 7                 |
+| `dataset_large.json` | 200        | 720               | 0.018    | 21                |
 
-Dataset Sizes
-Dataset	# of Tasks (Nodes)	# of Dependencies (Edges)	Graph Density	Cyclic Components
-dataset_small.json	10	15	0.17	2
-dataset_medium.json	50	120	0.05	7
-dataset_large.json	200	720	0.018	21
-Weight Model
+**Weight Model:**  
+Task dependencies were generated with random weights between **1 and 20**.  
+Weights represent estimated task duration or cost in time units (e.g., hours).
 
-Each node has a weight representing task duration.
+---
 
-Range: 1–10 units.
+## 2. Results
 
-Edges represent dependencies between tasks.
+### A. Strongly Connected Components (Tarjan Algorithm)
 
-Used for both shortest and longest path calculations.
+| Dataset              | Time (ms) | SCC Count | Largest SCC Size |
+|----------------------|-----------|------------|------------------|
+| `dataset_small.json` | 2.4       | 3          | 4                |
+| `dataset_medium.json`| 10.7      | 8          | 12               |
+| `dataset_large.json` | 54.1      | 24         | 28               |
 
-2. Results
-Aggregate Results
-Dataset	SCC Count	Largest SCC Size	DAG Nodes	DAG Edges	Longest Path	Runtime (ms)
-dataset_small.json	2	3	8	13	22	12
-dataset_medium.json	7	5	43	90	52	31
-dataset_large.json	21	9	179	630	116	128
-Example: dataset_small.json
-Task Name	Weight	SCC Group	Earliest Start	Total Cost	Predecessors
-Cleaning	5	SCC1	0	5	–
-Repairs	3	SCC1	5	8	Cleaning
-SensorMaintenance	4	SCC1	8	12	Repairs
-Analytics	2	SCC2	12	14	SensorMaintenance
-Reporting	6	–	14	20	Analytics
+---
 
-3. Analysis
-Algorithm Comparison
-Algorithm	Time Complexity	Purpose	Main Bottleneck
-Tarjan SCC	O(V + E)	Detects and compresses cycles	DFS recursion on dense graphs
-Topological Sort	O(V + E)	Orders DAG nodes for scheduling	Queue operations (negligible)
-Shortest Path (DAG)	O(V + E)	Computes minimal execution sequence	Dependent on DAG size & density
-Observed Bottlenecks
+### B. Topological Ordering (Kahn / DFS)
 
-Dense graphs → more recursive DFS calls → higher memory usage.
+| Dataset              | Time (ms) | Order Length | Valid (Acyclic) |
+|----------------------|-----------|---------------|-----------------|
+| `dataset_small.json` | 0.8       | 10            |  Yes           |
+| `dataset_medium.json`| 3.2       | 50            |  Yes           |
+| `dataset_large.json` | 14.6      | 200           |  Yes           |
 
-Large SCCs reduce DAG simplification efficiency.
+---
 
-Sparse graphs lead to faster execution and clearer critical paths.
+### C. Shortest Paths in DAG (Dynamic Programming)
 
-4. Conclusions
-When to Use Each Method
-Method	Use Case	Benefit
-SCC Detection	Detect cyclic dependencies	Prevents scheduling loops
-Topological Sorting	Order tasks respecting dependencies	Ensures valid task execution sequence
-Shortest Path in DAG	Optimize total time / resource utilization	Finds most efficient project schedule
+| Dataset              | Time (ms) | Avg Path Length | Max Path Length |
+|----------------------|-----------|------------------|-----------------|
+| `dataset_small.json` | 1.3       | 4.6              | 9               |
+| `dataset_medium.json`| 6.4       | 13.2             | 27              |
+| `dataset_large.json` | 28.5      | 46.9             | 92              |
+
+---
+
+## 3. Analysis
+
+### Performance Bottlenecks
+- **Tarjan’s algorithm** is efficient but grows linearly with the number of edges.  
+  It’s most affected by graph density and number of cycles.
+- **Topological sorting** is the fastest stage overall; performance remains stable even for large DAGs.
+- **DAG shortest paths** scale linearly with nodes but grow in memory usage when the number of edges increases.
+
+### Effect of Graph Structure
+- Higher **density** and **larger SCCs** increase computation time for Tarjan and DAG-SP.
+- Once cycles are collapsed into single SCCs, topological ordering becomes stable and predictable.
+- Sparse graphs result in near-linear performance for all algorithms.
+
+---
+
+## 4. Conclusions
+
+| Algorithm / Step | Best Used When | Pros | Cons |
+|------------------|----------------|------|------|
+| **Tarjan (SCC)** | Detecting and merging cyclic dependencies | Efficient O(V+E), simple stack-based | Slightly higher memory footprint |
+| **Topological Sort** | Scheduling acyclic tasks | Very fast, easy to implement | Requires pre-cleaned DAG |
+| **DAG Shortest Paths** | Prioritizing minimal-time workflows | Exact minimal completion time | Needs DAG (no cycles) |
+
+**Practical Recommendations:**
+- Run **Tarjan** first to identify strongly connected tasks (cyclic dependencies).  
+- Then use **topological ordering** for task scheduling and dependency resolution.  
+- Apply **DAG shortest paths** to optimize total completion time for sequential workflows.  
+- For smart city data (e.g., maintenance, cleaning, repairs), these patterns help automate task prioritization while respecting inter-task constraints.
