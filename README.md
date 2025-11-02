@@ -71,9 +71,3 @@ Weights represent estimated task duration or cost in time units (e.g., hours).
 | **Tarjan (SCC)** | Detecting and merging cyclic dependencies | Efficient O(V+E), simple stack-based | Slightly higher memory footprint |
 | **Topological Sort** | Scheduling acyclic tasks | Very fast, easy to implement | Requires pre-cleaned DAG |
 | **DAG Shortest Paths** | Prioritizing minimal-time workflows | Exact minimal completion time | Needs DAG (no cycles) |
-
-**Practical Recommendations:**
-- Run **Tarjan** first to identify strongly connected tasks (cyclic dependencies).  
-- Then use **topological ordering** for task scheduling and dependency resolution.  
-- Apply **DAG shortest paths** to optimize total completion time for sequential workflows.  
-- For smart city data (e.g., maintenance, cleaning, repairs), these patterns help automate task prioritization while respecting inter-task constraints.
